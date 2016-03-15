@@ -18,13 +18,13 @@ from djangodm.mixins import (
                 )
 
 from tags.models import Tag
-
+from sellers.mixins import SellerAccountMixin
 from .forms import ProductAddForm, ProductModelForm
 from .mixins import ProductManagerMixin
 from .models import Product
 
 
-class ProductCreateView(LoginRequiredMixin, SubmitBtnMixin, CreateView):
+class ProductCreateView(SellerAccountMixin, SubmitBtnMixin, CreateView):
     model = Product
     template_name = "form.html"
     form_class = ProductModelForm
@@ -32,11 +32,11 @@ class ProductCreateView(LoginRequiredMixin, SubmitBtnMixin, CreateView):
     submit_btn = "Add Product"
 
     def form_valid(self, form):
-        user = self.request.user
-        form.instance.user = user
+        # user = self.request.user
+        # form.instance.user = user
+        seller = self.get_account()
+        form.instance.seller = seller
         valid_data = super(ProductCreateView, self).form_valid(form)
-        form.instance.managers.add(user)
-        # add all default users
         tags = form.cleaned_data.get("tags")
         if tags:
             tags_list = tags.split(",")
@@ -131,7 +131,20 @@ class ProductDownloadView(MultiSlugMixin, DetailView):
         else:
             raise Http404
 
+class SellerProductListView(SellerAccountMixin, ListView):
+    model = Product
+    template_name = "sellers/product_list_view.html"
 
+    def get_queryset(self, *args, **kwargs):
+        qs = super(SellerProductListView, self).get_queryset(**kwargs)
+        qs = qs.filter(seller=self.get_account())
+        query = self.request.GET.get("q")
+        if query:
+            qs = qs.filter(
+                Q(title__icontains=query)|
+                Q(description__icontains=query)
+            ).order_by("title")
+        return qs
 
 class ProductListView(ListView):
     model = Product
