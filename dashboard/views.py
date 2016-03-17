@@ -3,7 +3,6 @@ import random
 from django.views.generic import View
 from django.shortcuts import render
 
-# Create your views here.
 
 from products.models import Product
 

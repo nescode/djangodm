@@ -28,12 +28,9 @@ class ProductCreateView(SellerAccountMixin, SubmitBtnMixin, CreateView):
     model = Product
     template_name = "form.html"
     form_class = ProductModelForm
-    # success_url = "/products/"
     submit_btn = "Add Product"
 
     def form_valid(self, form):
-        # user = self.request.user
-        # form.instance.user = user
         seller = self.get_account()
         form.instance.seller = seller
         valid_data = super(ProductCreateView, self).form_valid(form)
@@ -49,14 +46,10 @@ class ProductCreateView(SellerAccountMixin, SubmitBtnMixin, CreateView):
 
         return valid_data
 
-    # def get_success_url(self):
-    #     return reverse("product_list_view")
-
 class ProductUpdateView(ProductManagerMixin, SubmitBtnMixin, MultiSlugMixin, UpdateView):
     model = Product
     template_name = "form.html"
     form_class = ProductModelForm
-    # success_url = "/products/"
     submit_btn = "Update Product"
 
     def get_initial(self):
@@ -85,18 +78,6 @@ class ProductUpdateView(ProductManagerMixin, SubmitBtnMixin, MultiSlugMixin, Upd
                     new_tag.products.add(self.get_object())
         return valid_data
 
-    # def get_object(self, *args, **kwargs):
-    #     user = self.request.user
-    #     obj = super(ProductUpdateView, self).get_object(*args, **kwargs)
-    #     if obj.user == user or user in obj.managers.all():
-    #         return obj
-    #     else:
-    #         raise Http404
-
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super(ProductUpdateView, self).get_context_data(*args, **kwargs)
-    #     context["submit_btn"] = "Update Product"
-    #     return context
 
 class ProductDetailView(MultiSlugMixin, DetailView):
     model = Product
@@ -195,8 +176,6 @@ def detail_slug_view(request, slug=None):
         product = get_object_or_404(Product, slug=slug)
     except Product.MultipleObjectsReturned:
         product = Product.objects.filter(slug=slug).order_by("-title").first()
-    # print slug
-    # product = 1
     template = "detail_view.html"
     context = {
             "object": product
@@ -210,21 +189,8 @@ def detail_view(request, object_id=None):
             "object": product
         }
     return render(request, template, context)
-    # if object_id is not None:
-    #     product = get_object_or_404(Product, id=object_id)
-    #     # product = Product.objects.get(id=object_id)
-    #     # try:
-    #     #     product = Product.objects.get(id=object_id)
-    #     # except Product.DoesNotExist:
-    #     #     product = None
-    #
-    #
-    #
-    # else:
-    #     raise Http404
 
 def list_view(request):
-# list of items
     print request
     queryset = Product.objects.all()
     template = "list_view.html"

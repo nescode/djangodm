@@ -12,7 +12,6 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ["title", "description"]
     list_filter = ["price", "sale_price"]
     list_editable = ["sale_price"]
-    # prepopulated_fields = {"slug": ("title",)}
     class Meta:
         model = Product
 

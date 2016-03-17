@@ -57,7 +57,6 @@ class SellerDashboard(SellerAccountMixin, FormMixin, View):
 			context["title"] = "Account Pending"
 		elif exists and active:
 			context["title"] = "Seller Dashboard"
-			#products = Product.objects.filter(seller=account)
 			context["products"] = self.get_products()
 			context["transactions"] = self.get_transactions()[:5]
 		else:
