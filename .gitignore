@@ -1,6 +1,8 @@
-bin/
-include/
-lib/
+db.sqlite3
 .DS_STORE
 .Python
-*.py[cod]
+*.pyc
+*.pyo
+/static
+/media
+/static_cdn
