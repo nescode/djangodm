@@ -75,6 +75,8 @@ $("#purchase-btn").click(function(event){
 	<h1>Product: {{ object.title }}</h1>
 	<p>{{ object.description }}</p>
 	<p>{{ object.price }}</p>
+	<p>Purchase: {{ object.transaction_set.count }}</p>
+
 
 
 	{% for img in object.thumbnail_set.all %}
