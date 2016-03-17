@@ -3,7 +3,6 @@ from django.utils.text import slugify
 from .models import Product
 
 PUBLISH_CHOICES = (
-    # ('', ""),
     ('publish', "Publish"),
     ('draft', "Draft")
 )
@@ -43,13 +42,7 @@ class ProductAddForm(forms.Form):
 class ProductModelForm(forms.ModelForm):
     tags = forms.CharField(label='Related Tags', required=False)
     publish = forms.ChoiceField(widget=forms.RadioSelect, choices=PUBLISH_CHOICES, required=False)
-    # description = forms.CharField(widget=forms.Textarea(
-    #     attrs={
-    #         "class": "my-custom-class",
-    #         "placeholder": "Description",
-    #         "some-attr": "this",
-    #     }
-    # )) # This might create issue.
+
     class Meta:
         model = Product
         fields = [
@@ -72,11 +65,6 @@ class ProductModelForm(forms.ModelForm):
 
 def clean(self, *args, **kwargs):
     cleaned_data = super(ProductModelForm, self).clean(*args, **kwargs)
-    # title = cleaned_data.get("title")
-    # slug = slugify(title)
-    # qs = Product.objects.filter(slug=slug).exists()
-    # if qs:
-    #     raise forms.ValidationError("Title is take, give a new title again.")
     return cleaned_data
 
 

@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.db import models
 
-# Create your models here.
 
 from tags.models import Tag
 
@@ -24,5 +23,3 @@ class TagView(models.Model):
 
 	def __unicode__(self):
 		return str(self.tag.title)
-
-
