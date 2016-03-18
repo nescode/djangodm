@@ -86,8 +86,9 @@ class ProductDetailView(MultiSlugMixin, DetailView):
         context = super(ProductDetailView, self).get_context_data(*args, **kwargs)
         obj = self.get_object()
         tags = obj.tag_set.all()
-        for tag in tags:
-            new_view = TagView.objects.add_count(self.request.user.id, tag)
+        if self.request.user.is_authenticated():
+            for tag in tags:
+                new_view = TagView.objects.add_count(self.request.user.id, tag)
         return context
 
 class ProductDownloadView(MultiSlugMixin, DetailView):

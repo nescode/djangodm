@@ -11,15 +11,9 @@
 <form method='POST' action=''> {% csrf_token %}
 	<h3>Rules of the Marketplace</h3>
 	<ol>
-		<li>
-			Be kind
-		</li>
-		<li>
-			Sell well
-		</li>
-		<li>
-			Don't steal
-		</li>
+		<li>Be kind</li>
+		<li>Sell well</li>
+		<li>Don't steal</li>
 	</ol>
 {{ apply_form.as_p }}
 <br/>
@@ -50,15 +44,9 @@
 {% include "sellers/transaction_list.html" with transaction_list=transactions %}
 
 
-<p>
-<a href='{% url "sellers:transactions" %}'>View all transactions</a>
-</p>
+<p><a href='{% url "sellers:transactions" %}'>View all transactions</a></p>
 </div>
 
-
 {% endif %}
-
-
-
 
 {% endblock %}

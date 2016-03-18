@@ -7,11 +7,16 @@ from products.views import (
     SellerProductListView,
     ProductUpdateView,
 )
+
+# Import views from seller app to process url
+
 from .views import (
     SellerDashboard,
     SellerTransactionListView,
     SellerProductDetailRedirectView,
     )
+
+# Url setup for seller
 
 urlpatterns = [
     url(r'^$', SellerDashboard.as_view(), name='dashboard'),
