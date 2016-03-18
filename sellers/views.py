@@ -13,6 +13,8 @@ from .forms import NewSellerForm
 from .mixins import SellerAccountMixin
 from .models import SellerAccount
 
+# Seller product list and details
+
 class SellerProductDetailRedirectView(RedirectView):
 	permanent = True
 
@@ -20,6 +22,7 @@ class SellerProductDetailRedirectView(RedirectView):
 		obj = get_object_or_404(Product, pk=kwargs['pk'])
 		return obj.get_absolute_url()
 
+# Seller transaction lists
 
 class SellerTransactionListView(SellerAccountMixin, ListView):
 	model = Transaction
@@ -28,8 +31,7 @@ class SellerTransactionListView(SellerAccountMixin, ListView):
 	def get_queryset(self):
 		return self.get_transactions()
 
-
-
+# Seller dashboard
 
 class SellerDashboard(SellerAccountMixin, FormMixin, View):
 	form_class = NewSellerForm

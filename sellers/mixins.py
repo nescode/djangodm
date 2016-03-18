@@ -7,6 +7,7 @@ from products.models import Product
 from .models import SellerAccount
 
 
+# Seller account mixins
 
 class SellerAccountMixin(LoginRequiredMixin, object):
 	account = None
