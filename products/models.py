@@ -144,7 +144,7 @@ def product_post_save_receiver(sender, instance, created, *args, **kwargs):
 
         if micro_created:
             create_new_thumb(media_path, micro, owner_slug, micro_max[0], micro_max[1])
-            
+
 
 post_save.connect(product_post_save_receiver, sender=Product)
 
@@ -159,3 +159,12 @@ class MyProducts(models.Model):
     class Meta:
         verbose_name = "My products"
         verbose_name_plural = "My Products"
+
+class ProductRating(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    product = models.ForeignKey(Product)
+    rating = models.IntegerField(null=True, blank=True)
+    verified = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return "%s" %(self.rating)
