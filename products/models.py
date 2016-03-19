@@ -45,6 +45,14 @@ class Product(models.Model):
             return self.sale_price
         return self.price
 
+    def get_html_price(self):
+        price = self.get_price
+        if price == self.sale_price:
+            return "<p><span>%s</span> <span style='color:red;text-decoration:line-through;'>%s</span></p>" %(self.sale_price, self.price)
+        else:
+            return "<p>%s</p>" %(self.price)
+
+
 def create_slug(instance, new_slug=None):
     slug = slugify(instance.title)
     if new_slug is not None:
