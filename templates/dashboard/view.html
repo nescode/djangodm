@@ -14,5 +14,13 @@
   {% endfor %}
 </div>
 
+{% if curated.count > 0 %}
+  {% for curated_section in curated %}
+    <div class="">
+      <h1>{{ curated_section.section_name }}</h1>
+      {% include "products/product_list_snippet.html" with product_list=curated_section.products.all %}
+    </div>
+  {% endfor %}
+{% endif %}
 
 {% endblock content %}

@@ -176,3 +176,12 @@ class ProductRating(models.Model):
 
     def __unicode__(self):
         return "%s" %(self.rating)
+
+class CuratedProducts(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    section_name = models.CharField(max_length=120)
+    products = models.ManyToManyField(Product, blank=True)
+    active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.section_name
