@@ -20,10 +20,11 @@ from djangodm.mixins import (
                 )
 
 from tags.models import Tag
+from sellers.models import SellerAccount
 from sellers.mixins import SellerAccountMixin
 from .forms import ProductAddForm, ProductModelForm
 from .mixins import ProductManagerMixin
-from .models import Product, ProductRating
+from .models import Product, ProductRating, MyProducts
 
 class ProductRatingAjaxView(AjaxRequiredMixin, View):
     def post(self, request, *args, **kwargs):
@@ -178,6 +179,32 @@ class SellerProductListView(SellerAccountMixin, ListView):
             ).order_by("title")
         return qs
 
+class VendorListView(ListView):
+    model = Product
+    template_name = "products/product_list.html"
+
+    def get_object(self):
+        username = self.kwargs.get("vendor_name")
+        seller = get_object_or_404(SellerAccount, user__name=username)
+        return seller
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(VendorListView, self).get_context_data(*args, **kwargs)
+        context["vendor_name"] = str(self.get_object().user.username)
+        return context
+
+    def get_queryset(self, *args, **kwargs):
+        username = self.kwargs.get("vendor_name")
+        seller = get_object_or_404(SellerAccount, user__name=username)
+        qs = super(VendorListView, self).get_queryset(**kwargs).filter(seller=seller)
+        query = self.request.GET.get("q")
+        if query:
+            qs = qs.filter(
+                Q(title__icontains=query)|
+                Q(description__icontains=query)
+            ).order_by("title")
+        return qs
+
 class ProductListView(ListView):
     model = Product
 
@@ -191,9 +218,24 @@ class ProductListView(ListView):
             ).order_by("title")
         return qs
 
+class UserLibraryListView(LoginRequiredMixin, ListView):
+    model = MyProducts
+    template_name = "products/library_list.html"
+
+    def get_queryset(self, *args, **kwargs):
+        obj = MyProducts.objects.get_or_create(user=self.request.user)[0]
+        qs = obj.products.all()
+        query = self.request.GET.get("q")
+        if query:
+            qs = qs.filter(
+                Q(title__icontains=query)|
+                Q(description__icontains=query)
+            ).order_by("title")
+        return qs
+
 def create_view(request):
     # Form
-    form = ProductModelForm(request.POST or None)
+    form = ProductModelForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         print form.cleaned_data.get("publish")
         instance = form.save(commit=False)
