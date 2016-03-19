@@ -4,7 +4,7 @@
 
 {% endblock style %}
 {% block content %}
-<h1>products</h1>
+<h1>{% if vendor_name %}{{ vendor_name }}{% endif %} Products</h1>
 <p>
   <form method="GET" action="">
 <input type='text' name='q' placeholder='Search' value='{{ request.GET.q }}'/>
