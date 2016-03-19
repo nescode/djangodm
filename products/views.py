@@ -235,7 +235,7 @@ class UserLibraryListView(LoginRequiredMixin, ListView):
 
 def create_view(request):
     # Form
-    form = ProductModelForm(request.POST or None)
+    form = ProductModelForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         print form.cleaned_data.get("publish")
         instance = form.save(commit=False)
