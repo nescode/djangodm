@@ -22,7 +22,7 @@ Post setting up virtualenv Run the following commands. In case you would like kn
 ```
 git clone https://github.com/nescode/djangodm.git
 cd djangodm
-pip install -r requirements.txt
+pip install -r requirement.txt
 python manage.py migrate
 python manage.py runserver
 ```
